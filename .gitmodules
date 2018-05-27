@@ -1,5 +1,6 @@
 [submodule "3rdParty/Catch2"]
 	path = 3rdParty/Catch2
-	url = https://github.com/catchorg/Catch2.git[submodule "3rdParty/CImg"]
+	url = https://github.com/catchorg/Catch2.git
+[submodule "3rdParty/CImg"]
 	path = 3rdParty/CImg
 	url = https://github.com/dtschump/CImg.git
