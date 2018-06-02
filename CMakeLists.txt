@@ -6,42 +6,47 @@ cmake_minimum_required (VERSION 3.8)
 project ("SheepyEngine")
 
 set (CMAKE_CXX_STANDARD 17)
-
-set (HEADER_FILES 3rdParty/CImg/CImg.h)
-
 set (SOURCE_DIRECTORY Source)
+set (HEADER_FILES 
+    ${SOURCE_DIRECTORY}/Game.h 
+    ${SOURCE_DIRECTORY}/GameObject.h
+)
+set (SOURCE_FILES 
+    ${SOURCE_DIRECTORY}/Game.cpp 
+)
+set (SHEEPYENGINE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/Source)
 
-set (TEST_DIRECTORY Test)
 
 # Include sub-projects.
-add_subdirectory ("Source")
-add_subdirectory ("Test")
+add_subdirectory (${SOURCE_DIRECTORY})
 
 # Include libraries
-include_directories (
-    "${CMAKE_CURRENT_LIST_DIR}/3rdParty/CImg"
-    "${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/single_include"
-)
+set (CIMG_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/CImg)
+add_library (CImg INTERFACE)
+target_include_directories (CImg INTERFACE ${CIMG_INCLUDE_DIR})
 
+add_library (SheepyEngine STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
-add_library (SheepyEngine STATIC 
-    "${SOURCE_DIRECTORY}/Game.cpp" 
-    "${SOURCE_DIRECTORY}/Game.h" 
-    "${SOURCE_DIRECTORY}/GameObject.h"
-    ${HEADER_FILES})
+target_link_libraries (SheepyEngine CImg)
 
-target_include_directories(SheepyEngine PRIVATE ${CMAKE_CURRENT_LIST_DIR}/3rdParty/CImg/)
+# Tests
+set (CATCH_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/single_include)
+set (TEST_DIRECTORY Test)
+set (TEST_SOURCES ${TEST_DIRECTORY}/test.cpp)
 
-add_executable(SheepyEngineTest "${TEST_DIRECTORY}/test.cpp" "3rdParty/Catch2/single_include/catch.hpp")
+add_subdirectory (${TEST_DIRECTORY})
+add_library (Catch INTERFACE)
+target_include_directories (Catch INTERFACE ${CATCH_INCLUDE_DIR})
 
-target_include_directories(SheepyEngineTest PRIVATE ${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/)
+add_executable (SheepyEngineTest ${TEST_SOURCES})
 
-# TODO: Add tests and install targets if needed.
+target_link_libraries (SheepyEngineTest SheepyEngine Catch)
 
-if(${RUN_TESTS})
-	ADD_CUSTOM_COMMAND(
-		TARGET SheepyEngineTest SheepyEngine
-		POST_BUILD
-		COMMAND ${CMAKE_CURRENT_LIST_DIR}/Build/Debug/SheepyEngineTest.exe
-	)
-endif()
+#TODO: Consider if automatic testing can be integrated better
+#if(${RUN_TESTS})
+#	ADD_CUSTOM_COMMAND(
+#		TARGET SheepyEngineTest
+#		POST_BUILD
+#		COMMAND ${CMAKE_CURRENT_LIST_DIR}/Build/Debug/SheepyEngineTest.exe
+#	)
+#endif()
