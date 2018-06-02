@@ -10,12 +10,13 @@ set (SOURCE_DIRECTORY Source)
 set (HEADER_FILES 
     ${SOURCE_DIRECTORY}/Game.h 
     ${SOURCE_DIRECTORY}/GameObject.h
+    ${SOURCE_DIRECTORY}/Transform.h
 )
 set (SOURCE_FILES 
     ${SOURCE_DIRECTORY}/Game.cpp 
+    ${SOURCE_DIRECTORY}/GameObject.cpp 
+    ${SOURCE_DIRECTORY}/Transform.cpp 
 )
-set (SHEEPYENGINE_SOURCES ${CMAKE_CURRENT_LIST_DIR}/Source)
-
 
 # Include sub-projects.
 add_subdirectory (${SOURCE_DIRECTORY})
@@ -32,16 +33,21 @@ target_link_libraries (SheepyEngine CImg)
 # Tests
 set (CATCH_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/single_include)
 set (TEST_DIRECTORY Test)
-set (TEST_SOURCES ${TEST_DIRECTORY}/test.cpp)
+set (TEST_SOURCES
+	${TEST_DIRECTORY}/test.h
+	${TEST_DIRECTORY}/GameTest.cpp
+)
 
 add_subdirectory (${TEST_DIRECTORY})
 add_library (Catch INTERFACE)
-target_include_directories (Catch INTERFACE ${CATCH_INCLUDE_DIR})
+target_include_directories (
+	Catch INTERFACE ${CATCH_INCLUDE_DIR}
+	SheepyEngine INTERFACE ${SOURCE_DIRECTORY}
+)
 
 add_executable (SheepyEngineTest ${TEST_SOURCES})
 
 target_link_libraries (SheepyEngineTest SheepyEngine Catch)
-
 #TODO: Consider if automatic testing can be integrated better
 #if(${RUN_TESTS})
 #	ADD_CUSTOM_COMMAND(

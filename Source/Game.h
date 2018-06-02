@@ -13,33 +13,11 @@
 
 namespace SheepyEngine
 {
-	class Game {
-	public:
-		Game();
-		~Game();
-
+	namespace Game {
 		// Game API
+		void Create();
+		void Delete();
 		
-		static void addGameObject(std::unique_ptr<GameObject> object);
-
-	private:
-		//Internal methods
-
-		static std::chrono::high_resolution_clock::time_point getCurrentTime();
-		static void initialize();
-
-		// Game loop methods
-		
-		static void update();
-		static void draw(long frameRatio);
-
-
-		static const int _FPS = 60;
-		inline static const double _MS_PER_UPDATE = 100.0 / _FPS;
-		static std::vector<std::unique_ptr<GameObject>> _OBJECTS;
-
+		static void AddGameObject(std::unique_ptr<GameObject> object);
 	};
-
-	extern cimg_library::CImgDisplay MAIN_CANVAS;
-
 }
