@@ -7,6 +7,9 @@
 #include <future>
 #include <atomic>
 #include <map>
+#include <mutex>
+#include <queue>
+#include <optional>
 
 using namespace SheepyEngine;
 namespace SheepyEngine
@@ -17,15 +20,22 @@ namespace
 {
 //Internals
 
+enum class Message
+{
+	quit
+};
+
 //Internal fields
 
 const int FPS = 60;
-const double MS_PER_UPDATE = 100.0 / FPS;
+constexpr double MS_PER_UPDATE = 100.0 / FPS;
 
 std::atomic<bool> isRunning;
-std::atomic<bool> testbool = false;
 std::future<void> gameLoop;
-cimg_library::CImgDisplay MAIN_CANVAS{};
+cimg_library::CImgDisplay canvas{};
+
+std::mutex toGameLoopMessageMutex{};
+std::queue<Message> toGameLoopMessageQueue{};
 
 std::vector<std::shared_ptr<GameObject>> objects;
 
@@ -33,6 +43,34 @@ std::vector<std::shared_ptr<GameObject>> objects;
 
 std::chrono::high_resolution_clock::time_point GetCurrentTime() {
 	return std::chrono::high_resolution_clock::now();
+}
+
+void AddMessage(const Message& message)
+{
+	toGameLoopMessageMutex.lock();
+
+	toGameLoopMessageQueue.push(message);
+
+	toGameLoopMessageMutex.unlock();
+}
+
+std::optional<Message> PopMessage()
+{
+	toGameLoopMessageMutex.lock();
+
+	if (toGameLoopMessageQueue.empty())
+	{
+		toGameLoopMessageMutex.unlock();
+		
+		return std::nullopt;
+	}
+
+	const auto message = toGameLoopMessageQueue.front();
+	toGameLoopMessageQueue.pop();
+
+	toGameLoopMessageMutex.unlock();
+
+	return std::optional<Message>{message};
 }
 
 
@@ -50,19 +88,13 @@ void Draw(const long frameRatio) {
 	}
 }
 
-
-std::atomic<bool> stopped = false;
 void Initialize() {
-	stopped = false;
-	isRunning = false;
-	testbool = true;
+
 }
-void SetStopped(bool stoppedValue)
-{
-	stopped = true;
-}
+
 void RunGameLoop()
 {
+	auto stopped = false;
 	auto previous = GetCurrentTime();
 	auto lag = 0.0;
 	while (!stopped) {
@@ -82,8 +114,17 @@ void RunGameLoop()
 		}
 
 		Draw(static_cast<const long>(lag / MS_PER_UPDATE));
+
+		if (auto message = PopMessage())
+		{
+			switch (*message)
+			{
+			case Message::quit:
+				stopped = true;
+				break;
+			}
+		}
 	}
-	throw std::runtime_error("AAH");
 }
 }
 
@@ -92,13 +133,12 @@ void RunGameLoop()
 void Create() {
 	Initialize();
 
-	gameLoop = std::async([=] {return RunGameLoop(); });
+	gameLoop = std::async(RunGameLoop);
 }
 
 void Delete()
 {
-	stopped = true;
-	testbool = false;
+	AddMessage(Message::quit);
 	gameLoop.get();
 }
 
@@ -107,7 +147,7 @@ bool IsRunning()
 	return isRunning;
 }
 
-void AddGameObject(const std::shared_ptr<GameObject> object) {
+void AddGameObject(const std::shared_ptr<GameObject>& object) {
 	objects.push_back(object);
 }
 }

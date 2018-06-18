@@ -14,7 +14,7 @@ SCENARIO("The game loop is executed", "[Game]")
 		std::cerr << "RETURNED";
 
 		REQUIRE(Game::IsRunning());
-
-		Game::Delete();
 	}
+
+	Game::Delete();
 }

@@ -21,6 +21,6 @@ void Create();
 void Delete();
 bool IsRunning();
 
-void AddGameObject(const std::shared_ptr<GameObject> object);
+void AddGameObject(const std::shared_ptr<GameObject>& object);
 };
 }
