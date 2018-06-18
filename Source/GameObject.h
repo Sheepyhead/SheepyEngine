@@ -7,11 +7,11 @@
 
 namespace SheepyEngine
 {
-	/// GameObject - Represents an object in the game world.
-	class GameObject {
-	public:
-		virtual void update();
+/// GameObject - Represents an object in the game world.
+class GameObject {
+public:
+	virtual void update();
 
-		virtual void draw(long frameRatio);
-	};
+	virtual void draw(long frameRatio);
+};
 }

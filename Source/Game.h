@@ -13,11 +13,14 @@
 
 namespace SheepyEngine
 {
-	namespace Game {
-		// Game API
-		void Create();
-		void Delete();
-		
-		static void AddGameObject(std::unique_ptr<GameObject> object);
-	};
+namespace Game {
+
+// Game API
+
+void Create();
+void Delete();
+bool IsRunning();
+
+void AddGameObject(const std::shared_ptr<GameObject> object);
+};
 }

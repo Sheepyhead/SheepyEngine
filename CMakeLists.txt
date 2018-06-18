@@ -45,6 +45,7 @@ target_include_directories (
 	SheepyEngine INTERFACE ${SOURCE_DIRECTORY}
 )
 
+link_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable (SheepyEngineTest ${TEST_SOURCES})
 
 target_link_libraries (SheepyEngineTest SheepyEngine Catch)
