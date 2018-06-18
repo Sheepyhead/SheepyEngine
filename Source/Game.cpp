@@ -6,10 +6,13 @@
 #include <chrono>
 #include <future>
 #include <atomic>
-#include <map>
 #include <mutex>
 #include <queue>
 #include <optional>
+#include <iostream>
+#include <cstdio>
+#include <CImg.h>
+#include <vector>
 
 using namespace SheepyEngine;
 namespace SheepyEngine
@@ -94,6 +97,7 @@ void Initialize() {
 
 void RunGameLoop()
 {
+	isRunning = true;
 	auto stopped = false;
 	auto previous = GetCurrentTime();
 	auto lag = 0.0;
@@ -125,6 +129,8 @@ void RunGameLoop()
 			}
 		}
 	}
+
+	isRunning = false;
 }
 }
 

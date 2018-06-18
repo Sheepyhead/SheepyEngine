@@ -3,11 +3,6 @@
 //
 #pragma once 
 
-#include <iostream>
-#include <cstdio>
-#include <CImg.h>
-#include <chrono>
-#include <vector>
 #include <memory>
 #include "GameObject.h"
 
