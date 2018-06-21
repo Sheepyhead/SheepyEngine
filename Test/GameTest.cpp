@@ -11,8 +11,6 @@ SCENARIO("The game loop is executed", "[Game]")
 	{
 		Game::Create();
 
-		std::cerr << "RETURNED";
-
 		REQUIRE(Game::IsRunning());
 	}
 

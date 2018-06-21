@@ -33,7 +33,6 @@ enum class Message
 const int FPS = 60;
 constexpr double MS_PER_UPDATE = 100.0 / FPS;
 
-std::atomic<bool> isRunning;
 std::future<void> gameLoop;
 cimg_library::CImgDisplay canvas{};
 
@@ -97,7 +96,6 @@ void Initialize() {
 
 void RunGameLoop()
 {
-	isRunning = true;
 	auto stopped = false;
 	auto previous = GetCurrentTime();
 	auto lag = 0.0;
@@ -130,7 +128,6 @@ void RunGameLoop()
 		}
 	}
 
-	isRunning = false;
 }
 }
 
@@ -150,7 +147,8 @@ void Delete()
 
 bool IsRunning()
 {
-	return isRunning;
+	// Check that the game loop has not finished running
+	return gameLoop.wait_for(std::chrono::seconds(0)) != std::future_status::ready;
 }
 
 void AddGameObject(const std::shared_ptr<GameObject>& object) {
