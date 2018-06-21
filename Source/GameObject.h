@@ -12,6 +12,6 @@ class GameObject {
 public:
 	virtual void update();
 
-	virtual void draw(long frameRatio);
+	const virtual void draw(long frameRatio) const;
 };
 }

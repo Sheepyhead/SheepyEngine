@@ -11,7 +11,9 @@ public:
 	~GameLoopTestGameObject();
 
 	void update() override;
+	const void draw(long frameRatio) const override;
 	int getNumberOfUpdateCalls();
+	int getNumberOfDrawCalls();
 private:
 	int numberOfUpdateCalls = 0;
 };

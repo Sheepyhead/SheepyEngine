@@ -22,14 +22,17 @@ SCENARIO("The game loop is executed", "[Game]")
 
 			Sleep(1000);
 
-			THEN("The game object is updated") {
-				auto numberOfUpdateCalls = gameObject->getNumberOfUpdateCalls();
-				REQUIRE(numberOfUpdateCalls > 0);
 
-				THEN("The game object is updated more than once") {
-					INFO("Number of update calls: " << numberOfUpdateCalls);
-					REQUIRE(numberOfUpdateCalls > 1);
-				}
+			THEN("The game object is updated more than once") {
+				auto numberOfUpdateCalls = gameObject->getNumberOfUpdateCalls();
+				WARN("Number of update calls: " << numberOfUpdateCalls);
+				REQUIRE(numberOfUpdateCalls > 1);
+			}
+
+			THEN("The game object is drawn more than once") {
+				auto numberOfDrawCalls = gameObject->getNumberOfDrawCalls();
+				WARN("Number of draw calls: " << numberOfDrawCalls);
+				REQUIRE(numberOfDrawCalls > 1);
 			}
 		}
 	}

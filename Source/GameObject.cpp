@@ -4,6 +4,6 @@ void SheepyEngine::GameObject::update()
 {
 }
 
-void SheepyEngine::GameObject::draw(long frameRatio)
+const void SheepyEngine::GameObject::draw(long frameRatio) const
 {
 }
