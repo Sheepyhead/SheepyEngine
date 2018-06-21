@@ -36,6 +36,8 @@ set (TEST_DIRECTORY Test)
 set (TEST_SOURCES
 	${TEST_DIRECTORY}/test.h
 	${TEST_DIRECTORY}/GameTest.cpp
+    ${TEST_DIRECTORY}/Stubs/GameLoopTestGameObject.h
+    ${TEST_DIRECTORY}/Stubs/GameLoopTestGameObject.cpp
 )
 
 add_subdirectory (${TEST_DIRECTORY})
