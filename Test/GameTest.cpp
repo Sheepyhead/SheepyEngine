@@ -1,8 +1,9 @@
 #include "test.h"
 #include <Game.h>
 #include "Stubs/GameLoopTestGameObject.h"
+#include "trompeloeil.hpp"
 
-
+extern template struct trompeloeil::reporter<trompeloeil::specialized>;
 
 SCENARIO("The game loop is executed", "[Game]")
 {

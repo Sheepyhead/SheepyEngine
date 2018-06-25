@@ -40,6 +40,7 @@ set (CATCH_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/single_include)
 set (TEST_DIRECTORY Test)
 set (TEST_SOURCES
 	${TEST_DIRECTORY}/test.h
+    ${TEST_DIRECTORY}/test.cpp
 	${TEST_DIRECTORY}/GameTest.cpp
     ${TEST_DIRECTORY}/Stubs/GameLoopTestGameObject.h
     ${TEST_DIRECTORY}/Stubs/GameLoopTestGameObject.cpp
