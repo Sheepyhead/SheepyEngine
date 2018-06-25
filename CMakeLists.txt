@@ -26,9 +26,14 @@ set (CIMG_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/CImg)
 add_library (CImg INTERFACE)
 target_include_directories (CImg INTERFACE ${CIMG_INCLUDE_DIR})
 
+set (TROMPELOEIL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/trompeloeil/include)
+add_library (TrompeLoeil INTERFACE)
+target_include_directories (TrompeLoeil INTERFACE ${TROMPELOEIL_INCLUDE_DIR})
+
+
 add_library (SheepyEngine STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
-target_link_libraries (SheepyEngine CImg)
+target_link_libraries (SheepyEngine CImg TrompeLoeil)
 
 # Tests
 set (CATCH_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/3rdParty/Catch2/single_include)

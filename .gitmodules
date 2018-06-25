@@ -4,3 +4,6 @@
 [submodule "3rdParty/CImg"]
 	path = 3rdParty/CImg
 	url = https://github.com/dtschump/CImg.git
+[submodule "3rdParty/trompeloeil"]
+	path = 3rdParty/trompeloeil
+	url = https://github.com/rollbear/trompeloeil
